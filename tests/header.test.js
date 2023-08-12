@@ -14,10 +14,8 @@ afterEach(async () => {
   await browser.close();
 });
 
-test('We can launch a browser', async () => {
-  const logoElement = await page.$('a.brand-logo');
-  if (!logoElement) throw new Error('Element a.brand-logo not found');
-
+test('Header logo has the correct text', async () => {
   const text = await page.$eval('a.brand-logo', (el) => el.innerHTML);
+
   expect(text).toEqual('Blogster');
 });
