@@ -31,6 +31,10 @@ class Page {
   constructor(page) {
     this.page = page;
   }
+
+  async getContentsOf(selector) {
+    return await this.page.$eval(selector, (el) => el.innerHTML);
+  }
 }
 
 module.exports = Page;
