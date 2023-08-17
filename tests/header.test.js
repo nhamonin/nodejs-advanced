@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 require('dotenv').config({
   path: '.env.dev',
 });
@@ -16,7 +15,6 @@ beforeEach(async () => {
 
 afterAll(async () => {
   await page.close();
-  await mongoose.disconnect();
 });
 
 test('Header logo has the correct text', async () => {
