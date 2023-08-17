@@ -35,6 +35,47 @@ class Page {
   async getContentsOf(selector) {
     return await this.page.$eval(selector, (el) => el.innerHTML);
   }
+
+  async get(path) {
+    return await this.page.evaluate(async (_path) => {
+      const result = await fetch(_path, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      return await result.json();
+    }, path);
+  }
+
+  async post(path, body) {
+    return await this.page.evaluate(
+      async (_path, _body) => {
+        const result = await fetch(_path, {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: _body,
+        });
+
+        return await result.json();
+      },
+      path,
+      JSON.stringify(body)
+    );
+  }
+
+  execRequests(actions) {
+    return Promise.all(
+      actions.map(({ method, path, data }) => {
+        return this[method](path, data);
+      })
+    );
+  }
 }
 
 module.exports = Page;
