@@ -3,8 +3,7 @@ const util = require('node:util');
 const mongoose = require('mongoose');
 const redis = require('redis');
 
-const redisUrl = 'redis://127.0.0.1:6379';
-const client = redis.createClient(redisUrl);
+const client = redis.createClient(process.env.REDIS_URI);
 client.hget = util.promisify(client.hget);
 const exec = mongoose.Query.prototype.exec;
 
@@ -28,9 +27,7 @@ mongoose.Query.prototype.exec = async function (...args) {
 
   if (cacheValue) {
     const doc = JSON.parse(cacheValue);
-    return Array.isArray(doc)
-      ? doc.map((d) => new this.model(d))
-      : new this.model(doc);
+    return Array.isArray(doc) ? doc.map((d) => new this.model(d)) : new this.model(doc);
   }
 
   const result = await exec.apply(this, args);
