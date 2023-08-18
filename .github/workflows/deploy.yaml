@@ -12,8 +12,8 @@ env:
   MONGO_URI: mongodb://127.0.0.1:27017/nodejs-advanced_ci
   REDIS_URI: redis://127.0.0.1:6379
   COOKIE_KEY: ci_cookie_key
-  GOOGLE_CLIENT_ID: ${{ env.GOOGLE_CLIENT_ID }}
-  GOOGLE_CLIENT_SECRET: ${{ env.GOOGLE_CLIENT_SECRET }}
+  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
 
 jobs:
   build:
