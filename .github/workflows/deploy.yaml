@@ -12,12 +12,12 @@ env:
   MONGO_URI: mongodb://127.0.0.1:27017/nodejs-advanced_ci
   REDIS_URI: redis://127.0.0.1:6379
   COOKIE_KEY: ci_cookie_key
-  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-  GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+  GOOGLE_CLIENT_ID: ${{ env.GOOGLE_CLIENT_ID }}
+  GOOGLE_CLIENT_SECRET: ${{ env.GOOGLE_CLIENT_SECRET }}
 
 jobs:
   build:
-    environment: production
+    environment: ci
     runs-on: ubuntu-latest
 
     strategy:
@@ -34,10 +34,6 @@ jobs:
         ports:
           - 6379:6379
 
-    env:
-      NODE_ENV: ci
-      PORT: 3000
-
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -51,6 +47,11 @@ jobs:
       - name: Start server
         run: |
           nohup npm run start &
-          sleep 3
+      - name: Wait for server to be ready
+        run: |
+          until $(curl --output /dev/null --silent --head --fail http://localhost:3000); do
+            printf '.'
+            sleep 5
+          done
       - name: Run tests
         run: npm run test
