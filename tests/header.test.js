@@ -1,22 +1,3 @@
-const Page = require('./helpers/page');
-
-let page;
-
-beforeAll(async (done) => {
-  page = await Page.build('new');
-  done();
-});
-
-beforeEach(async () => {
-  await page.goto('http://localhost:3000');
-  await page.logout();
-});
-
-afterAll(async (done) => {
-  await page.close();
-  done();
-});
-
 test('Header logo has the correct text', async () => {
   const text = await page.getContentsOf('a.brand-logo');
 
