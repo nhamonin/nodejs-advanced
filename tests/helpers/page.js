@@ -4,14 +4,11 @@ const userFactory = require('../factories/userFactory');
 
 class Page {
   static async build(mode) {
-    console.log({ mode });
     const browser = await puppeteer.launch({
-      headless: process.env.NODE_ENV === 'test' ? mode : true,
+      headless: ['development', 'ci'].includes(process.env.NODE_ENV) ? mode : true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
-    console.log({ browser });
     const page = await browser.newPage();
-    console.log({ page });
     const customPage = new Page(page);
 
     return new Proxy(customPage, {

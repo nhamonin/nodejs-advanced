@@ -2,8 +2,9 @@ const Page = require('./helpers/page');
 
 let page;
 
-beforeAll(async () => {
+beforeAll(async (done) => {
   page = await Page.build('new');
+  done();
 });
 
 beforeEach(async () => {
@@ -11,8 +12,9 @@ beforeEach(async () => {
   await page.logout();
 });
 
-afterAll(async () => {
+afterAll(async (done) => {
   await page.close();
+  done();
 });
 
 test('Header logo has the correct text', async () => {
