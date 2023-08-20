@@ -1,6 +1,3 @@
-require('dotenv').config({
-  path: '.env.dev',
-});
 const Page = require('./helpers/page');
 
 let page;
@@ -11,6 +8,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await page.goto('http://localhost:3000');
+  await page.logout();
 });
 
 afterAll(async () => {

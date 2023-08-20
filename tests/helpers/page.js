@@ -28,6 +28,12 @@ class Page {
     await this.page.waitFor('a[href="/auth/logout"]');
   }
 
+  async logout() {
+    await this.page.setCookie({ name: 'session', value: '' });
+    await this.page.setCookie({ name: 'session.sig', value: '' });
+    await this.page.goto('http://localhost:3000');
+  }
+
   constructor(page) {
     this.page = page;
   }

@@ -2,12 +2,16 @@ const Page = require('./helpers/page');
 
 let page;
 
-beforeEach(async () => {
+beforeAll(async () => {
   page = await Page.build('new');
-  await page.goto('http://localhost:3000');
 });
 
-afterEach(async () => {
+beforeEach(async () => {
+  await page.goto('http://localhost:3000');
+  await page.logout();
+});
+
+afterAll(async () => {
   await page.close();
 });
 
