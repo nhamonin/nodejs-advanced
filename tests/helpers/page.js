@@ -5,7 +5,7 @@ const userFactory = require('../factories/userFactory');
 class Page {
   static async build(mode) {
     const browser = await puppeteer.launch({
-      headless: mode,
+      headless: process.env.NODE_ENV === 'test' ? mode : true,
     });
     const page = await browser.newPage();
     const customPage = new Page(page);
